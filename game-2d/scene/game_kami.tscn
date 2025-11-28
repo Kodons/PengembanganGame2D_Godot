@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=4 uid="uid://hr2fvc4ht2ip"]
+[gd_scene load_steps=55 format=4 uid="uid://hr2fvc4ht2ip"]
 
 [ext_resource type="Script" uid="uid://bnsmt8ful3tov" path="res://script/character_body_2d.gd" id="1_n3dmp"]
 [ext_resource type="Texture2D" uid="uid://cyok7vn1fjuhs" path="res://assets/character/player/idle/1.png" id="2_5jhds"]
@@ -46,6 +46,9 @@
 [ext_resource type="Texture2D" uid="uid://b5y58wb4bqs84" path="res://assets/character/player/run/12.png" id="40_25414"]
 [ext_resource type="Texture2D" uid="uid://0ra0ur5oerqv" path="res://assets/character/player/run/13.png" id="41_raavb"]
 [ext_resource type="Texture2D" uid="uid://bq8xg4mb5axpu" path="res://assets/character/player/run/14.png" id="42_b6cet"]
+[ext_resource type="PackedScene" uid="uid://c7hu5vjpdbwnq" path="res://scene/coin_ui.tscn" id="47_5iup0"]
+[ext_resource type="Script" uid="uid://bcf076a6irdk5" path="res://script/kill_zone.gd" id="47_etng3"]
+[ext_resource type="PackedScene" uid="uid://c47uy5gylhqth" path="res://scene/coin.tscn" id="48_pc0y1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_erqwp"]
 texture = ExtResource("28_5jhds")
@@ -366,10 +369,41 @@ shape = SubResource("CapsuleShape2D_raavb")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 position = Vector2(574, 320)
+limit_bottom = 800
+limit_smoothed = true
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="CoinUI" parent="CharacterBody2D" instance=ExtResource("47_5iup0")]
+offset_left = 556.0
+offset_top = 410.0
+offset_right = 556.0
+offset_bottom = 410.0
+
+[node name="KillZone" type="Area2D" parent="."]
 position = Vector2(-10, 10)
+script = ExtResource("47_etng3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1154, 10)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(1134, 275)
 shape = SubResource("WorldBoundaryShape2D_n3dmp")
+
+[node name="Timer" type="Timer" parent="KillZone"]
+wait_time = 1.5
+one_shot = true
+
+[node name="Coin" parent="." instance=ExtResource("48_pc0y1")]
+position = Vector2(357, 617)
+
+[node name="Coin2" parent="." instance=ExtResource("48_pc0y1")]
+position = Vector2(646, 559)
+
+[node name="Coin3" parent="." instance=ExtResource("48_pc0y1")]
+position = Vector2(786, 531)
+
+[node name="Coin4" parent="." instance=ExtResource("48_pc0y1")]
+position = Vector2(2, 532)
+
+[node name="Coin5" parent="." instance=ExtResource("48_pc0y1")]
+position = Vector2(1035, 626)
+
+[connection signal="body_entered" from="KillZone" to="KillZone" method="_on_body_entered"]
+[connection signal="timeout" from="KillZone/Timer" to="KillZone" method="_on_timer_timeout"]

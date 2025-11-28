@@ -14,3 +14,14 @@ config/name="Game2D"
 run/main_scene="uid://hr2fvc4ht2ip"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Controller="*res://script/controller.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/resizable=false
+window/stretch/scale=1.3
